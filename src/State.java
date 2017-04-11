@@ -3,7 +3,7 @@ import java.io.*;
 
 class State {
 	//Q1
-	public int numberInQueue = 0, accumulated = 0, noMeasurements = 0;
+	public int numberInQueue = 0, accumulated = 0, noMeasurements = 0, noMeasurements2 = 0;
 	public int maxQ1 = 10;
 	public int Q1_Interarrivaltime = 1;
 	public double rejected = 0;
@@ -16,7 +16,7 @@ class State {
 	SimpleFileWriter W = new SimpleFileWriter("number.m", false);
 	
 	public double expDistr(double mean){
-		return (1 / mean) * Math.log(slump.nextDouble());
+		return (mean) * Math.log(slump.nextDouble());
 	}
 
 	public void TreatEvent(Event x) {
@@ -25,7 +25,6 @@ class State {
 				arrivals++;
 				if(numberInQueue < 10){ //to prevent queue from exceeding its limit
 					numberInQueue++;
-					EventList.InsertEvent(G.ARRIVAL, G.time + Q1_Interarrivaltime);
 					if (numberInQueue == 1) {
 						EventList.InsertEvent(G.READY, G.time - expDistr(2.1));
 					}
@@ -33,6 +32,7 @@ class State {
 				else{
 					rejected++;
 				}
+				EventList.InsertEvent(G.ARRIVAL, G.time + Q1_Interarrivaltime);
 			}
 				break;
 			case G.READY: {
@@ -46,24 +46,31 @@ class State {
 				break;
 			case G.MEASURE: {
 				accumulated = accumulated + numberInQueue;
-				accumulated2 = accumulated2 + numberInQueue2;
 				noMeasurements++;
-				EventList.InsertEvent(G.MEASURE, G.time - expDistr(5));
+				EventList.InsertEvent(G.MEASURE, G.time + slump.nextDouble()*10);
 				W.println(String.valueOf(numberInQueue));
 			}
 				break;
 			case G.ARRIVAL_2: {
-				numberInQueue2++;
-				if(numberInQueue2 == 1){
-					EventList.InsertEvent(G.READY_2, G.time + 2);
+				if(numberInQueue2 == 0){
+					EventList.InsertEvent(G.READY_2, G.time + 2.0);
 				}
+				numberInQueue2++;
 			}
 				break;
 			case G.READY_2: {
+				System.out.println("nbr in Q2 before -: "+numberInQueue2);
 				numberInQueue2--;
 				if (numberInQueue > 0) {
-					EventList.InsertEvent(G.READY, G.time + 2);
+					EventList.InsertEvent(G.READY_2, G.time + 2.0);
 				}
+			}
+				break;
+			case G.MEASURE_2: {
+				accumulated2 = accumulated2 + numberInQueue2;
+				//System.out.println("ac: " + accumulated2);
+				noMeasurements2++;
+				EventList.InsertEvent(G.MEASURE_2, G.time - expDistr(5));
 			}
 				break;
 		}
