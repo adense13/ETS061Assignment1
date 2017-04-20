@@ -1,3 +1,4 @@
+package Task1;
 public class EventList {
 
 	public static Event list, last;
