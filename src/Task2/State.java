@@ -16,14 +16,17 @@ public class State {
 	public int nbrJobsInSystem = 0;
 	Random slump = new Random();
 	SimpleFileWriter Task21 = new SimpleFileWriter("Task21.m", false);
+	int priority;
+	boolean doExpDelay;
 	
 	//measurements
 	public int nbrMeasurements = 0;
 	public int acumNbrInBuffer = 0;
 	public int acumNbrJobsInSystem = 0;
 	
-	public State(){
+	public State(int priority, boolean doExpDelay){
 		buffer = new ArrayList<Integer>();
+		this.priority = priority;
 	}
 	
 	public void TreatEvent(Event x) {
@@ -35,7 +38,7 @@ public class State {
 			else{
 				buffer.add(S.ARRIVAL_A);
 			}
-			EventList.InsertEvent(S.ARRIVAL_A, S.time + Distributions.poDistr(1/lambda));
+			EventList.InsertEvent(S.ARRIVAL_A, S.time + Distributions.expDistr(1/lambda));
 			nbrJobsInSystem++; //We enter the system
 			break;
 		case S.ARRIVAL_B:
@@ -49,8 +52,11 @@ public class State {
 			break;
 		case S.READY_A:
 			nbrJobsInSystem--; //We leave the system
-			EventList.InsertEvent(S.ARRIVAL_B, S.time + d);
-			//EventList.InsertEvent(S.ARRIVAL_B, S.time + Distributions.expDistr(d));
+			if(doExpDelay){
+				EventList.InsertEvent(S.ARRIVAL_B, S.time + Distributions.expDistr(d));
+			}else{
+				EventList.InsertEvent(S.ARRIVAL_B, S.time + d);
+			}
 			newJob();
 			break;
 		case S.READY_B:
@@ -66,7 +72,7 @@ public class State {
 		}
 	}
 	
-	public int fetchJobFromBuffer(int priority){
+	public int fetchJobFromBuffer(){
 		for(int i = 0; i<buffer.size(); i++){
 			if(buffer.get(i) == priority){
 				return buffer.remove(i); //we fetch the first JOB_B we can find
@@ -81,7 +87,7 @@ public class State {
 	}
 	
 	public void newJob(){
-		int jobFromBuffer = fetchJobFromBuffer(S.ARRIVAL_B);
+		int jobFromBuffer = fetchJobFromBuffer();
 		
 		if( jobFromBuffer == S.ARRIVAL_B){
 			EventList.InsertEvent(S.READY_B, S.time + x_b);
