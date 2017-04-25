@@ -8,11 +8,11 @@ public class Main {
 		simulation(0);
 	}
 	
-	public static void simulation(int interarrivalTime){
+	public static void simulation(double meanArrivalTime){
 		Event actEvent;
 		State actState = new State();
-		if(interarrivalTime != 0){
-			actState.Q1_Interarrivaltime = interarrivalTime;
+		if(meanArrivalTime != 0){
+			actState.meanArrivalTime = meanArrivalTime;
 		}
 		new EventList();
 		EventList.InsertEvent(G.ARRIVAL, 0);
@@ -24,19 +24,19 @@ public class Main {
 			G.time = actEvent.eventTime;
 			actState.TreatEvent(actEvent);
 		}
+		double meanNbrInQ1 = actState.accumulated1/actState.noMeasurements1;
+		double meanNbrInQ2 = actState.accumulated2/actState.noMeasurements2;
 		System.out.println("------------------");
-		System.out.println("Inter-Arrival Time used: "+1.0*actState.Q1_Interarrivaltime);
+		System.out.println("Mean Arrival Time used: "+1.0*actState.meanArrivalTime);
 		System.out.println("Number of measurements Q1: "+1.0*actState.noMeasurements1);
 		System.out.println("Number of measurements Q2: "+1.0*actState.noMeasurements2);
-		System.out.println("1.1-->Mean value Q2: "+1.0*actState.accumulated2 / actState.noMeasurements2);
-		
-		System.out.println("Time/arrivals: "+ (1.0*G.time / actState.arrivals));
-		actState.W.close();
+		System.out.println("Mean nbr customers in NETWORK:"+1.0*(meanNbrInQ1+meanNbrInQ2));
+		System.out.println( "N = 2/(x-1) = " + 1.0*(2/(meanArrivalTime-1)) );
 	}
 
 	public static void main(String[] args) throws IOException {
-		simulation(1);
 		simulation(2);
-		simulation(5);
+		simulation(1.5);
+		simulation(1.1);
 	}
 }

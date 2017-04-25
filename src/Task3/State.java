@@ -9,7 +9,7 @@ class State {
 	//Q1
 	public int numberInQueue1 = 0, accumulated1 = 0, noMeasurements1 = 0, noMeasurements2 = 0;
 	public int maxQ1 = 10;
-	public int Q1_Interarrivaltime = 1;
+	public double meanArrivalTime = 1;
 	public double rejectionsQ1 = 0;
 	public double arrivals = 0;
 	
@@ -26,7 +26,7 @@ class State {
 					EventList.InsertEvent(G.READY, G.time + Distributions.expDistr(1));
 				}
 				numberInQueue1++;
-				EventList.InsertEvent(G.ARRIVAL, G.time + Q1_Interarrivaltime);
+				EventList.InsertEvent(G.ARRIVAL, G.time + Distributions.expDistr(meanArrivalTime));
 				break;
 			case G.READY:
 				numberInQueue1--;
