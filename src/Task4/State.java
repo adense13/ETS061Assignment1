@@ -33,7 +33,8 @@ public class State {
 	public void TreatEvent(Event event) {
 		switch (event.eventType) {
 		case S.ARRIVAL:
-			if(nbrJobsInSystem == 0 && nbrJobsInSystem <= N){
+			//if(nbrJobsInSystem == 0 && nbrJobsInSystem <= N){
+			if(nbrJobsInSystem <= N){
 				EventList.InsertEvent(S.READY, S.time + x);
 				EventList.InsertEvent(S.ARRIVAL, S.time + (1/lambda));
 				nbrJobsInSystem++; //We enter the system

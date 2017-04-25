@@ -22,12 +22,17 @@ public class MainTask4 {
 			System.out.println(name);
 			System.out.println("-----------------------");
 			System.out.println("Nbr measurements: " + 1.0 * actState.nbrMeasurements);
+			System.out.println("\n");
 		}
 
 		public static void main(String[] args) {
 			simulation("Task_4_1", 100, 8, 1000, 1, 1000);
 			simulation("Task_4_2", 10, 80, 1000, 1, 1000);
 			simulation("Task_4_3", 200, 4, 1000, 1, 1000);
+			
+			simulation("Task_4_4", 10, 4, 100, 4, 1000);
+			simulation("Task_4_5", 10, 4, 100, 1, 4000);
+			simulation("Task_4_6", 10, 4, 100, 4, 4000);
 		}
 
 }
