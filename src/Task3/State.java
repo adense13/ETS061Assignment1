@@ -6,6 +6,7 @@ import Utils.Distributions;
 import java.io.*;
 
 class State {
+	public double totalTimeInSystem = 0;
 	//Q1
 	public int numberInQueue1 = 0, accumulated1 = 0, noMeasurements1 = 0, noMeasurements2 = 0;
 	public int maxQ1 = 10;
@@ -22,8 +23,11 @@ class State {
 	public void TreatEvent(Event x) {
 		switch (x.eventType) {
 			case G.ARRIVAL:
+				arrivals++;
 				if(numberInQueue1 == 0){
-					EventList.InsertEvent(G.READY, G.time + Distributions.expDistr(1));
+					double readyTime = Distributions.expDistr(1);
+					totalTimeInSystem += readyTime;
+					EventList.InsertEvent(G.READY, G.time + readyTime);
 				}
 				numberInQueue1++;
 				EventList.InsertEvent(G.ARRIVAL, G.time + Distributions.expDistr(meanArrivalTime));
@@ -31,7 +35,9 @@ class State {
 			case G.READY:
 				numberInQueue1--;
 				if (numberInQueue1 > 0) {
-					EventList.InsertEvent(G.READY, G.time + Distributions.expDistr(1));
+					double readyTime = Distributions.expDistr(1);
+					totalTimeInSystem += readyTime;
+					EventList.InsertEvent(G.READY, G.time + readyTime);
 				}
 				//Insert ARRIVAL into Q2
 				EventList.InsertEvent(G.ARRIVAL_2, G.time);
@@ -44,14 +50,18 @@ class State {
 				break;
 			case G.ARRIVAL_2:
 				if(numberInQueue2 == 0){
-					EventList.InsertEvent(G.READY_2, G.time + Distributions.expDistr(1));
+					double readyTime = Distributions.expDistr(1);
+					totalTimeInSystem += readyTime;
+					EventList.InsertEvent(G.READY_2, G.time + readyTime);
 				}
 				numberInQueue2++;
 				break;
 			case G.READY_2:
 				numberInQueue2--;
 				if (numberInQueue2 > 0) {
-					EventList.InsertEvent(G.READY_2, G.time + Distributions.expDistr(1));
+					double readyTime = Distributions.expDistr(1);
+					totalTimeInSystem += readyTime;
+					EventList.InsertEvent(G.READY_2, G.time + readyTime);
 				}
 				break;
 			case G.MEASURE_2:
