@@ -32,7 +32,10 @@ public class State {
 	public void TreatEvent(Event x) {
 		switch (x.eventType) {
 		case S.ARRIVAL_A:
-			if(nbrJobsInSystem == 0){
+			//if(nbrJobsInSystem == 0){
+			//	EventList.InsertEvent(S.READY_A, S.time + x_a);
+			//}
+			if(buffer.size() == 0 && nbrJobsInSystem == 0){
 				EventList.InsertEvent(S.READY_A, S.time + x_a);
 			}
 			else{
@@ -42,7 +45,10 @@ public class State {
 			nbrJobsInSystem++; //We enter the system
 			break;
 		case S.ARRIVAL_B:
-			if(nbrJobsInSystem == 0){
+			//if(nbrJobsInSystem == 0){
+			//	EventList.InsertEvent(S.READY_B, S.time + x_b);
+			//}
+			if(buffer.size() == 0 && nbrJobsInSystem == 0){
 				EventList.InsertEvent(S.READY_B, S.time + x_b);
 			}
 			else{

@@ -26,9 +26,9 @@ public class MainTask2 {
 		}
 
 		public static void main(String[] args) {
-			simulation("Task 1.1", S.ARRIVAL_B, false);
-			simulation("Task 1.2", S.ARRIVAL_B, true);
-			simulation("Task 1.3", S.ARRIVAL_A, false);
+			simulation("Task 2.1", S.ARRIVAL_B, false);
+			simulation("Task 2.2", S.ARRIVAL_B, true);
+			simulation("Task 2.3", S.ARRIVAL_A, false);
 		}
 
 }

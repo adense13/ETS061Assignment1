@@ -8,8 +8,8 @@ import java.io.*;
 class State {
 	public double totalTimeInSystem = 0;
 	//Q1
-	public int numberInQueue1 = 0, accumulated1 = 0, noMeasurements1 = 0, noMeasurements2 = 0;
-	public int maxQ1 = 10;
+	public double numberInQueue1 = 0, accumulated1 = 0, noMeasurements1 = 0, noMeasurements2 = 0;
+	public double maxQ1 = 10;
 	public double meanArrivalTime = 1;
 	public double rejectionsQ1 = 0;
 	public double arrivals = 0;

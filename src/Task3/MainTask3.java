@@ -2,7 +2,7 @@ package Task3;
 import java.util.*;
 import java.io.*;
 
-public class Main {
+public class MainTask3 {
 	
 	public static void simulation(){
 		simulation(0);
@@ -19,7 +19,7 @@ public class Main {
 		EventList.InsertEvent(G.MEASURE, 5);
 		EventList.InsertEvent(G.MEASURE_2, 5);
 		//while (G.time < 10000) {
-		while(actState.noMeasurements2 < 1000 || actState.noMeasurements1 < 1000){
+		while(actState.noMeasurements2 < 1000 && actState.noMeasurements1 < 1000){
 			actEvent = EventList.FetchEvent();
 			G.time = actEvent.eventTime;
 			actState.TreatEvent(actEvent);
