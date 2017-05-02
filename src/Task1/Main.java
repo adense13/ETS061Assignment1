@@ -29,7 +29,7 @@ public class Main {
 		System.out.println("Number of measurements Q1: "+1.0*actState.noMeasurements1);
 		System.out.println("Number of measurements Q2: "+1.0*actState.noMeasurements2);
 		System.out.println("1.1-->Mean value Q2: "+1.0*actState.accumulated2 / actState.noMeasurements2);
-		System.out.println("1.2-->Rejection prob for Q1: "+1.0*actState.rejectionsQ1 / actState.accumulated1);
+		System.out.println("1.2-->Rejection prob for Q1: "+1.0*actState.rejectionsQ1 / actState.arrivals);//actState.accumulated1);
 		actState.W.close();
 	}
 

@@ -23,6 +23,7 @@ class State {
 	public void TreatEvent(Event x) {
 		switch (x.eventType) {
 			case G.ARRIVAL:
+				arrivals++;
 				if(numberInQueue1 == 0){
 					EventList.InsertEvent(G.READY, G.time - expDistr(2.1));
 				}
