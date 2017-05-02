@@ -1,18 +1,19 @@
 package Task2;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 import Utils.Distributions;
 
 public class State {
 	//parameters
-	public double lambda = 150;
+	public double lambda = 150.0;
 	public double x_a = 0.002;
 	public double x_b = 0.004;
-	public double d = 1;
+	public double d = 1.0;
 	
 	//System stuff
-	public ArrayList<Integer> buffer;
+	public LinkedList<Integer> buffer;
 	public int nbrJobsInSystem = 0;
 	Random slump = new Random();
 	SimpleFileWriter Task21 = new SimpleFileWriter("Task21.m", false);
@@ -25,7 +26,7 @@ public class State {
 	public int acumNbrJobsInSystem = 0;
 	
 	public State(int priority, boolean doExpDelay){
-		buffer = new ArrayList<Integer>();
+		buffer = new LinkedList<Integer>();
 		this.priority = priority;
 	}
 	
@@ -35,13 +36,18 @@ public class State {
 			//if(nbrJobsInSystem == 0){
 			//	EventList.InsertEvent(S.READY_A, S.time + x_a);
 			//}
-			if(buffer.size() == 0 && nbrJobsInSystem == 0){
+			if(buffer.size() == 0){// && nbrJobsInSystem == 0){
 				EventList.InsertEvent(S.READY_A, S.time + x_a);
 			}
 			else{
-				buffer.add(S.ARRIVAL_A);
+				if(priority == S.ARRIVAL_A){
+					buffer.addFirst(S.ARRIVAL_A);
+				}
+				else{
+					buffer.addLast((S.ARRIVAL_A));
+				}
 			}
-			EventList.InsertEvent(S.ARRIVAL_A, S.time + Distributions.expDistr(1/lambda));
+			EventList.InsertEvent(S.ARRIVAL_A, S.time + Distributions.expDistr(1.0/lambda));
 			nbrJobsInSystem++; //We enter the system
 			break;
 		case S.ARRIVAL_B:
@@ -52,7 +58,12 @@ public class State {
 				EventList.InsertEvent(S.READY_B, S.time + x_b);
 			}
 			else{
-				buffer.add(S.ARRIVAL_B);
+				if(priority == S.ARRIVAL_B){
+					buffer.addFirst(S.ARRIVAL_B);
+				}
+				else{
+					buffer.addLast((S.ARRIVAL_B));
+				}
 			}
 			nbrJobsInSystem++; //We enter the system
 			break;
@@ -93,13 +104,14 @@ public class State {
 	}
 	
 	public void newJob(){
-		int jobFromBuffer = fetchJobFromBuffer();
-		
-		if( jobFromBuffer == S.ARRIVAL_B){
-			EventList.InsertEvent(S.READY_B, S.time + x_b);
-		}
-		else if( jobFromBuffer == S.ARRIVAL_A){
-			EventList.InsertEvent(S.READY_A, S.time + x_a);
+		if(buffer.size() > 0){
+			int job = buffer.poll();
+			if(job == S.ARRIVAL_A){
+				EventList.InsertEvent(S.READY_A, S.time + x_a);
+			}
+			else if(job == S.ARRIVAL_B){
+				EventList.InsertEvent(S.READY_B, S.time + x_b);
+			}
 		}
 	}
 }

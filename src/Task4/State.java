@@ -36,7 +36,8 @@ public class State {
 			//if(nbrJobsInSystem == 0 && nbrJobsInSystem <= N){
 			if(nbrJobsInSystem <= N){
 				EventList.InsertEvent(S.READY, S.time + x);
-				EventList.InsertEvent(S.ARRIVAL, S.time + (1/lambda));
+				EventList.InsertEvent(S.ARRIVAL, S.time + Distributions.expDistr(1/lambda));
+						//(1/lambda));
 				nbrJobsInSystem++; //We enter the system
 			}
 			break;
