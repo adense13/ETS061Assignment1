@@ -4,6 +4,10 @@ public class EventList {
 	public static Event list, last;
 
 	EventList() {
+		init();
+	}
+	
+	public static void init(){
 		EventList.list = new Event();
 		EventList.last = new Event();
 		EventList.list.next = EventList.last;

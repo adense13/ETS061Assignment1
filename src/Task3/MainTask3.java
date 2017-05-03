@@ -38,7 +38,9 @@ public class MainTask3 {
 
 	public static void main(String[] args) throws IOException {
 		simulation(2);
+		//EventList.init();
 		simulation(1.5);
+		//EventList.init();
 		simulation(1.1);
 	}
 }
