@@ -10,7 +10,7 @@ public class MainTask2 {
 			Event actEvent;
 			State actState = new State(priority, doExpDelay);
 			new EventList();
-			EventList.InsertEvent(S.ARRIVAL_A, 0);
+			EventList.InsertEvent(S.ARRIVAL_A, 5);
 			EventList.InsertEvent(S.MEASUREMENT, 0.1);
 			while(actState.nbrMeasurements < 1000){
 				actEvent = EventList.FetchEvent();

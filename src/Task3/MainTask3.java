@@ -30,9 +30,9 @@ public class MainTask3 {
 		System.out.println("Mean Arrival Time used: "+1.0*actState.meanArrivalTime);
 		//System.out.println("Number of measurements Q1: "+1.0*actState.noMeasurements1);
 		//System.out.println("Number of measurements Q2: "+1.0*actState.noMeasurements2);
-		System.out.println("Mean nbr customers in NETWORK:"+1.0*(meanNbrInQ1+meanNbrInQ2));
+		System.out.println("(N) Mean nbr customers in NETWORK:"+1.0*(meanNbrInQ1+meanNbrInQ2));
 		System.out.println( "N = 2/(x-1) = " + 1.0*(2/(meanArrivalTime-1)) );
-		System.out.println("Mean time in system:"+1.0*(actState.totalTimeInSystem/actState.arrivals));
+		System.out.println("(T)Mean time in system:"+1.0*(actState.totalTimeInSystem/actState.arrivals));
 		System.out.println( "T = 2x/(x-1) = " + 1.0*((2*meanArrivalTime)/(meanArrivalTime-1)) );
 	}
 

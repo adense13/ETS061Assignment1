@@ -34,7 +34,7 @@ public class State {
 	public void TreatEvent(Event x) {
 		switch (x.eventType) {
 		case S.ARRIVAL_A:
-			if(buffer.size() == 0 && (!busy)){
+			if(buffer.size() == 0 || (!busy)){
 				EventList.InsertEvent(S.READY_A, S.time + x_a);
 				busy = true;
 			}

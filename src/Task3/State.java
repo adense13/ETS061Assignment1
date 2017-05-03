@@ -27,6 +27,7 @@ class State {
 				if(numberInQueue1 == 0){
 					double readyTime = Distributions.expDistr(1);
 					totalTimeInSystem += readyTime;
+					totalTimeInSystem += numberInQueue1*readyTime;
 					EventList.InsertEvent(G.READY, G.time + readyTime);
 				}
 				numberInQueue1++;
@@ -37,6 +38,7 @@ class State {
 				if (numberInQueue1 > 0) {
 					double readyTime = Distributions.expDistr(1);
 					totalTimeInSystem += readyTime;
+					totalTimeInSystem += numberInQueue1*readyTime;
 					EventList.InsertEvent(G.READY, G.time + readyTime);
 				}
 				//Insert ARRIVAL into Q2
@@ -61,6 +63,7 @@ class State {
 				if (numberInQueue2 > 0) {
 					double readyTime = Distributions.expDistr(1);
 					totalTimeInSystem += readyTime;
+					totalTimeInSystem += numberInQueue2*readyTime;
 					EventList.InsertEvent(G.READY_2, G.time + readyTime);
 				}
 				break;
