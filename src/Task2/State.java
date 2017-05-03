@@ -19,6 +19,7 @@ public class State {
 	SimpleFileWriter Task21 = new SimpleFileWriter("Task21.m", false);
 	int priority;
 	boolean doExpDelay;
+	boolean busy = false;
 	
 	//measurements
 	public int nbrMeasurements = 0;
@@ -33,11 +34,9 @@ public class State {
 	public void TreatEvent(Event x) {
 		switch (x.eventType) {
 		case S.ARRIVAL_A:
-			//if(nbrJobsInSystem == 0){
-			//	EventList.InsertEvent(S.READY_A, S.time + x_a);
-			//}
-			if(buffer.size() == 0){// && nbrJobsInSystem == 0){
+			if(buffer.size() == 0 && (!busy)){
 				EventList.InsertEvent(S.READY_A, S.time + x_a);
+				busy = true;
 			}
 			else{
 				if(priority == S.ARRIVAL_A){
@@ -48,14 +47,11 @@ public class State {
 				}
 			}
 			EventList.InsertEvent(S.ARRIVAL_A, S.time + Distributions.expDistr(1.0/lambda));
-			nbrJobsInSystem++; //We enter the system
 			break;
 		case S.ARRIVAL_B:
-			//if(nbrJobsInSystem == 0){
-			//	EventList.InsertEvent(S.READY_B, S.time + x_b);
-			//}
-			if(buffer.size() == 0 && nbrJobsInSystem == 0){
+			if(buffer.size() == 0 && (!busy)){
 				EventList.InsertEvent(S.READY_B, S.time + x_b);
+				busy = true;
 			}
 			else{
 				if(priority == S.ARRIVAL_B){
@@ -68,6 +64,7 @@ public class State {
 			nbrJobsInSystem++; //We enter the system
 			break;
 		case S.READY_A:
+			busy = false;
 			nbrJobsInSystem--; //We leave the system
 			if(doExpDelay){
 				EventList.InsertEvent(S.ARRIVAL_B, S.time + Distributions.expDistr(d));
@@ -77,6 +74,7 @@ public class State {
 			newJob();
 			break;
 		case S.READY_B:
+			busy = false;
 			nbrJobsInSystem--; //We leave the system
 			newJob();
 			break;
@@ -89,27 +87,15 @@ public class State {
 		}
 	}
 	
-	public int fetchJobFromBuffer(){
-		for(int i = 0; i<buffer.size(); i++){
-			if(buffer.get(i) == priority){
-				return buffer.remove(i); //we fetch the first JOB_B we can find
-			}
-		}
-		if(buffer.size() > 0){
-			return buffer.get(0); //otherwise let's just fetch the first job in the list
-		}
-		else{
-			return 0; //empty buffer
-		}
-	}
-	
 	public void newJob(){
 		if(buffer.size() > 0){
 			int job = buffer.poll();
 			if(job == S.ARRIVAL_A){
+				busy = true;
 				EventList.InsertEvent(S.READY_A, S.time + x_a);
 			}
 			else if(job == S.ARRIVAL_B){
+				busy = true;
 				EventList.InsertEvent(S.READY_B, S.time + x_b);
 			}
 		}
