@@ -11,10 +11,10 @@ plot(Task_4_2)
 figure
 plot(Task_4_3)
 figure
-corr(Task_4_4)
+corr(Task_4_4, 35)
 %%
 figure
-corr(Task_4_5, 30)
+corr(Task_4_5, 35)
 %%
 figure
-corr(Task_4_6)
+corr(Task_4_6, 35)

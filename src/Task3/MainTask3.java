@@ -19,7 +19,7 @@ public class MainTask3 {
 		EventList.InsertEvent(G.MEASURE, 5);
 		EventList.InsertEvent(G.MEASURE_2, 5);
 		//while (G.time < 10000) {
-		while(actState.noMeasurements2 < 1000 && actState.noMeasurements1 < 1000){
+		while(actState.noMeasurements2 < 1000000 || actState.noMeasurements1 < 1000000){
 			actEvent = EventList.FetchEvent();
 			G.time = actEvent.eventTime;
 			actState.TreatEvent(actEvent);
@@ -38,9 +38,9 @@ public class MainTask3 {
 
 	public static void main(String[] args) throws IOException {
 		simulation(2);
-		//EventList.init();
+		EventList.init();
 		simulation(1.5);
-		//EventList.init();
+		EventList.init();
 		simulation(1.1);
 	}
 }
