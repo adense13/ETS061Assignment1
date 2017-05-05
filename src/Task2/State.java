@@ -16,7 +16,7 @@ public class State {
 	public LinkedList<Integer> buffer;
 	public int nbrJobsInSystem = 0;
 	Random slump = new Random();
-	SimpleFileWriter Task21 = new SimpleFileWriter("Task21.m", false);
+	SimpleFileWriter fw;
 	int priority;
 	boolean doExpDelay;
 	boolean busy = false;
@@ -25,79 +25,73 @@ public class State {
 	public int nbrMeasurements = 0;
 	public int acumNbrInBuffer = 0;
 	public int acumNbrJobsInSystem = 0;
+	public String name;
 	
-	public State(int priority, boolean doExpDelay){
+	public State(int priority, boolean doExpDelay, String name){
+		this.doExpDelay = doExpDelay;
 		buffer = new LinkedList<Integer>();
 		this.priority = priority;
+		this.name = name;
+		fw = new SimpleFileWriter(name+".m", false);
 	}
 	
 	public void TreatEvent(Event x) {
 		switch (x.eventType) {
 		case S.ARRIVAL_A:
-			if(buffer.size() == 0 && (!busy)){
-				EventList.InsertEvent(S.READY_A, S.time + x_a);
+			if(buffer.size() == 0){
+				EventList.InsertEvent(S.READY, S.time + x_a);
 				busy = true;
 			}
-			else{
-				if(priority == S.ARRIVAL_A){
-					buffer.addFirst(S.ARRIVAL_A);
-				}
-				else{
-					buffer.addLast((S.ARRIVAL_A));
-				}
+			
+			if(priority == S.ARRIVAL_A){
+				buffer.addFirst(S.ARRIVAL_A);
 			}
+			else{
+				buffer.addLast((S.ARRIVAL_A));
+			}
+			
 			EventList.InsertEvent(S.ARRIVAL_A, S.time + Distributions.expDistr(1.0/lambda));
 			break;
 		case S.ARRIVAL_B:
-			if(buffer.size() == 0 && (!busy)){
-				EventList.InsertEvent(S.READY_B, S.time + x_b);
+			if(buffer.size() == 0){
+				EventList.InsertEvent(S.READY, S.time + x_b);
 				busy = true;
 			}
+			if(priority == S.ARRIVAL_B){
+				buffer.addFirst(S.ARRIVAL_B);
+			}
 			else{
-				if(priority == S.ARRIVAL_B){
-					buffer.addFirst(S.ARRIVAL_B);
-				}
-				else{
-					buffer.addLast((S.ARRIVAL_B));
-				}
+				buffer.addLast((S.ARRIVAL_B));
 			}
 			nbrJobsInSystem++; //We enter the system
 			break;
-		case S.READY_A:
+		case S.READY:
 			busy = false;
-			nbrJobsInSystem--; //We leave the system
-			if(doExpDelay){
-				EventList.InsertEvent(S.ARRIVAL_B, S.time + Distributions.expDistr(d));
-			}else{
-				EventList.InsertEvent(S.ARRIVAL_B, S.time + d);
+			if(buffer.size() > 0){
+				int job = buffer.poll();
+				if(job == S.ARRIVAL_A){
+					busy = true;
+					EventList.InsertEvent(S.READY, S.time + x_a);
+					if(doExpDelay){
+						busy = true;
+						EventList.InsertEvent(S.ARRIVAL_B, S.time + Distributions.expDistr(d));
+					}else{
+						busy = true;
+						EventList.InsertEvent(S.ARRIVAL_B, S.time + d);
+					}
+				}
+				else if(job == S.ARRIVAL_B){
+					busy = true;
+					EventList.InsertEvent(S.READY, S.time + x_b);
+				}
 			}
-			newJob();
-			break;
-		case S.READY_B:
-			busy = false;
-			nbrJobsInSystem--; //We leave the system
-			newJob();
 			break;
 		case S.MEASUREMENT:
-			Task21.println(String.valueOf(buffer.size()));
-			nbrMeasurements++; //We leave the system
+			fw.println(String.valueOf(buffer.size()));
+			nbrMeasurements++;
 			acumNbrInBuffer += buffer.size();
 			EventList.InsertEvent(S.MEASUREMENT, S.time + 0.1);
 			break;
-		}
-	}
-	
-	public void newJob(){
-		if(buffer.size() > 0){
-			int job = buffer.poll();
-			if(job == S.ARRIVAL_A){
-				busy = true;
-				EventList.InsertEvent(S.READY_A, S.time + x_a);
-			}
-			else if(job == S.ARRIVAL_B){
-				busy = true;
-				EventList.InsertEvent(S.READY_B, S.time + x_b);
-			}
 		}
 	}
 }

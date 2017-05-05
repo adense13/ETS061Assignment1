@@ -6,6 +6,7 @@ public class S {
 	public static final int READY_A = 3;
 	public static final int READY_B = 4;
 	public static final int MEASUREMENT = 5;
+	public static final int READY = 6;
 	
 	public static double time = 0;
 }

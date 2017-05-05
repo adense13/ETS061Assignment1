@@ -8,7 +8,7 @@ public class MainTask2 {
 		
 		public static void simulation(String name, int priority, boolean doExpDelay){	
 			Event actEvent;
-			State actState = new State(priority, doExpDelay);
+			State actState = new State(priority, doExpDelay, name);
 			new EventList();
 			EventList.InsertEvent(S.ARRIVAL_A, 5);
 			EventList.InsertEvent(S.MEASUREMENT, 0.1);
@@ -17,6 +17,7 @@ public class MainTask2 {
 				S.time = actEvent.eventTime;
 				actState.TreatEvent(actEvent);
 			}
+			actState.fw.close();
 			System.out.println("-----------------------");
 			System.out.println(name);
 			System.out.println("-----------------------");
@@ -26,9 +27,9 @@ public class MainTask2 {
 		}
 
 		public static void main(String[] args) {
-			simulation("Task 2.1", S.ARRIVAL_B, false);
-			simulation("Task 2.2", S.ARRIVAL_B, true);
-			simulation("Task 2.3", S.ARRIVAL_A, false);
+			simulation("Task_2_1", S.ARRIVAL_B, false);
+			simulation("Task_2_2", S.ARRIVAL_B, true);
+			simulation("Task_2_3", S.ARRIVAL_A, false);
 		}
 
 }
