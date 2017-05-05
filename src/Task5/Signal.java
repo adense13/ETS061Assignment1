@@ -1,4 +1,4 @@
-package Task5;
+package inlämning1task5;
 
 // Denna klass definerar vad som ska finnas i en signal. Det som finns här är ett minimum. Man kan lägga till mer
 // om man vill att en signal ska kunna skicka mer information.
